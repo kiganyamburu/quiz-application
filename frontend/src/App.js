@@ -59,7 +59,7 @@ function AppContent() {
       </main>
 
       <footer className="footer">
-        <p>Quiz Application © 2024 - Test your knowledge!</p>
+        <p>Quiz Application © 2026 - Test your knowledge!</p>
       </footer>
     </div>
   );
