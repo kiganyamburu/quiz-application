@@ -1,0 +1,57 @@
+{% extends 'base.html' %} {% block title %}Leaderboard{% endblock %} {% block
+content %}
+<div class="row mb-4">
+  <div class="col">
+    <h1>Global Leaderboard</h1>
+    <p class="text-muted">Top performers across all quizzes</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <table class="table table-hover" id="leaderboard-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Total Score</th>
+          <th>Quizzes Completed</th>
+          <th>Average Score</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard-body">
+        <!-- Leaderboard entries will be loaded here -->
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  async function loadLeaderboard() {
+    try {
+      const response = await fetch("/api/leaderboard/");
+      const data = await response.json();
+      const tbody = document.getElementById("leaderboard-body");
+
+      data.forEach((entry) => {
+        const rankClass = entry.rank <= 3 ? `rank-${entry.rank}` : "";
+        tbody.innerHTML += `
+                    <tr>
+                        <td>
+                            <span class="leaderboard-rank ${rankClass}">${entry.rank}</span>
+                        </td>
+                        <td><strong>${entry.display_name}</strong></td>
+                        <td>${entry.total_score}</td>
+                        <td>${entry.quizzes_completed}</td>
+                        <td>${entry.average_percentage}%</td>
+                    </tr>
+                `;
+      });
+    } catch (error) {
+      console.error("Error loading leaderboard:", error);
+    }
+  }
+
+  loadLeaderboard();
+</script>
+{% endblock %}
