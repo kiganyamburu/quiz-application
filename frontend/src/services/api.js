@@ -10,6 +10,47 @@ const api = axios.create({
   },
 });
 
+// Add auth token to requests if available
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      config.headers.Authorization = `Token ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Auth API
+export const authAPI = {
+  // Login
+  login: async (credentials) => {
+    const response = await api.post("/auth/login/", credentials);
+    return response.data;
+  },
+
+  // Signup
+  signup: async (userData) => {
+    const response = await api.post("/auth/signup/", userData);
+    return response.data;
+  },
+
+  // Logout
+  logout: async () => {
+    const response = await api.post("/auth/logout/");
+    return response.data;
+  },
+
+  // Get current user
+  getCurrentUser: async () => {
+    const response = await api.get("/auth/user/");
+    return response.data;
+  },
+};
+
 // Quiz API
 export const quizAPI = {
   // Get all quizzes
