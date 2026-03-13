@@ -200,7 +200,6 @@ function QuizTake() {
   const currentQuestion = quiz.questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
   const isLastQuestion = currentQuestionIndex === quiz.questions.length - 1;
-  const hasAnsweredCurrent = !!answers[currentQuestion.id];
 
   return (
     <div className="quiz-container">
