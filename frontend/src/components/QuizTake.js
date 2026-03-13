@@ -145,8 +145,8 @@ function QuizTake() {
 
   if (error) {
     return (
-      <div className="card" style={{ textAlign: "center", padding: "2rem" }}>
-        <p style={{ color: "#ef4444" }}>{error}</p>
+      <div className="card error-card">
+        <p>{error}</p>
         <button className="btn btn-primary" onClick={loadQuiz}>
           Retry
         </button>
@@ -160,16 +160,24 @@ function QuizTake() {
   if (showNameInput) {
     return (
       <div className="quiz-container">
-        <div className="card" style={{ textAlign: "center", padding: "3rem" }}>
-          <h1 style={{ marginBottom: "1rem" }}>{quiz.title}</h1>
-          <p style={{ color: "#6b7280", marginBottom: "2rem" }}>
-            {quiz.description}
-          </p>
+        <div className="card quiz-start-card">
+          <span className="eyebrow">Round preview</span>
+          <h1 className="quiz-start-title">{quiz.title}</h1>
+          <p className="quiz-start-description">{quiz.description}</p>
 
-          <div style={{ marginBottom: "2rem", color: "#374151" }}>
-            <p>📝 {quiz.question_count} Questions</p>
-            <p>⭐ {quiz.total_points} Total Points</p>
-            {quiz.time_limit > 0 && <p>⏱️ {quiz.time_limit} Minutes</p>}
+          <div className="quiz-start-stats">
+            <div>
+              <strong>{quiz.question_count}</strong>
+              <span>Questions</span>
+            </div>
+            <div>
+              <strong>{quiz.total_points}</strong>
+              <span>Total points</span>
+            </div>
+            <div>
+              <strong>{quiz.time_limit > 0 ? quiz.time_limit : "∞"}</strong>
+              <span>{quiz.time_limit > 0 ? "Minutes" : "Flexible pace"}</span>
+            </div>
           </div>
 
           <div className="guest-input">
@@ -198,31 +206,25 @@ function QuizTake() {
     <div className="quiz-container">
       {/* Header */}
       <div className="quiz-header">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "1rem",
-          }}
-        >
-          <h2>{quiz.title}</h2>
+        <div className="quiz-header-bar">
+          <div>
+            <span className="eyebrow">In progress</span>
+            <h2>{quiz.title}</h2>
+          </div>
           <div className="timer">⏱️ {formatTime(timeElapsed)}</div>
         </div>
 
-        {/* Progress bar */}
         <div className="quiz-progress">
           <div
             className="quiz-progress-bar"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <p style={{ color: "#6b7280", fontSize: "0.875rem" }}>
+        <p className="quiz-progress-label">
           Question {currentQuestionIndex + 1} of {quiz.questions.length}
         </p>
       </div>
 
-      {/* Question Card */}
       <div className="question-card">
         <div className="question-number">
           Question {currentQuestionIndex + 1} • {currentQuestion.points} point
@@ -284,16 +286,8 @@ function QuizTake() {
         </div>
       </div>
 
-      {/* Question Navigator */}
-      <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
-        <div
-          style={{
-            display: "flex",
-            gap: "0.5rem",
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
+      <div className="question-jump-panel">
+        <div className="question-jump-grid">
           {quiz.questions.map((q, index) => {
             const isAnswered = !!answers[q.id];
             const isCurrent = index === currentQuestionIndex;
@@ -302,29 +296,14 @@ function QuizTake() {
               <button
                 key={q.id}
                 onClick={() => setCurrentQuestionIndex(index)}
-                style={{
-                  width: "36px",
-                  height: "36px",
-                  borderRadius: "50%",
-                  border: isCurrent ? "2px solid #3b82f6" : "2px solid #e5e7eb",
-                  background: isAnswered ? "#3b82f6" : "white",
-                  color: isAnswered ? "white" : "#374151",
-                  cursor: "pointer",
-                  fontWeight: "500",
-                }}
+                className={`question-jump ${isCurrent ? "current" : ""} ${isAnswered ? "answered" : ""}`}
               >
                 {index + 1}
               </button>
             );
           })}
         </div>
-        <p
-          style={{
-            marginTop: "0.5rem",
-            color: "#6b7280",
-            fontSize: "0.875rem",
-          }}
-        >
+        <p className="quiz-progress-label">
           {Object.keys(answers).length} of {quiz.questions.length} answered
         </p>
       </div>

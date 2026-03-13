@@ -16,7 +16,13 @@ function NavBar() {
     <nav className="navbar">
       <div className="navbar-content">
         <Link to="/" className="navbar-brand">
-          🎯 Quiz App
+          <span className="navbar-brand-mark">Q</span>
+          <span>
+            <span className="navbar-brand-name">Quiz Atlas</span>
+            <span className="navbar-brand-tag">
+              Playful quizzes, sharper bragging rights
+            </span>
+          </span>
         </Link>
         <div className="navbar-links">
           <Link to="/">Quizzes</Link>
@@ -45,21 +51,28 @@ function NavBar() {
 function AppContent() {
   return (
     <div className="app">
+      <div className="app-backdrop app-backdrop-left" />
+      <div className="app-backdrop app-backdrop-right" />
       <NavBar />
 
-      <main className="main-content">
-        <Routes>
-          <Route path="/" element={<QuizList />} />
-          <Route path="/quiz/:id" element={<QuizTake />} />
-          <Route path="/results/:attemptId" element={<QuizResults />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-      </main>
+      <div className="main-shell">
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<QuizList />} />
+            <Route path="/quiz/:id" element={<QuizTake />} />
+            <Route path="/results/:attemptId" element={<QuizResults />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
+        </main>
+      </div>
 
       <footer className="footer">
-        <p>Quiz Application © 2026 - Test your knowledge!</p>
+        <p>Quiz Atlas © 2026</p>
+        <span>
+          Built for quick matches, loud scoreboards, and repeat rounds.
+        </span>
       </footer>
     </div>
   );

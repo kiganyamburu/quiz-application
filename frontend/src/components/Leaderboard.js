@@ -99,8 +99,8 @@ function Leaderboard() {
 
   if (error) {
     return (
-      <div className="card" style={{ textAlign: "center", padding: "2rem" }}>
-        <p style={{ color: "#ef4444" }}>{error}</p>
+      <div className="card error-card">
+        <p>{error}</p>
         <button className="btn btn-primary" onClick={loadData}>
           Retry
         </button>
@@ -109,32 +109,27 @@ function Leaderboard() {
   }
 
   return (
-    <div>
+    <div className="page-layout">
       <div className="page-header">
-        <h1 className="page-title">🏆 Leaderboard</h1>
-        <p className="page-subtitle">
-          See how you stack up against other quiz takers!
-        </p>
+        <div>
+          <span className="eyebrow">Scoreboard</span>
+          <h1 className="page-title">Leaderboard</h1>
+          <p className="page-subtitle">
+            Track the regulars, the specialists, and the players chasing the top
+            spot.
+          </p>
+        </div>
       </div>
 
-      {/* Tab Navigation */}
-      <div
-        style={{
-          display: "flex",
-          gap: "1rem",
-          marginBottom: "1.5rem",
-          borderBottom: "2px solid #e5e7eb",
-          paddingBottom: "0.5rem",
-        }}
-      >
+      <div className="leaderboard-tabs">
         <button
-          className={`btn ${activeTab === "global" ? "btn-primary" : "btn-secondary"}`}
+          className={`tab-button ${activeTab === "global" ? "active" : ""}`}
           onClick={() => setActiveTab("global")}
         >
           Global Rankings
         </button>
         <button
-          className={`btn ${activeTab === "quiz" ? "btn-primary" : "btn-secondary"}`}
+          className={`tab-button ${activeTab === "quiz" ? "active" : ""}`}
           onClick={() => setActiveTab("quiz")}
         >
           By Quiz
@@ -142,15 +137,12 @@ function Leaderboard() {
       </div>
 
       {activeTab === "global" ? (
-        /* Global Leaderboard */
-        <div className="card">
-          <h2 style={{ marginBottom: "1rem" }}>Top Players</h2>
+        <div className="card leaderboard-card">
+          <h2 className="section-title">Top Players</h2>
 
           {globalLeaderboard.length === 0 ? (
-            <p
-              style={{ textAlign: "center", color: "#6b7280", padding: "2rem" }}
-            >
-              No entries yet. Be the first to complete a quiz!
+            <p className="empty-copy">
+              No entries yet. Be the first to complete a quiz.
             </p>
           ) : (
             <table className="leaderboard-table">
@@ -167,9 +159,16 @@ function Leaderboard() {
                 {globalLeaderboard.map((entry) => (
                   <tr key={entry.rank}>
                     <td>
-                      <span style={getRankStyle(entry.rank)}>{entry.rank}</span>
+                      <span
+                        className={`rank-badge rank-${Math.min(entry.rank, 3)} ${entry.rank > 3 ? "rank-default" : ""}`}
+                        style={
+                          entry.rank > 3 ? getRankStyle(entry.rank) : undefined
+                        }
+                      >
+                        {entry.rank}
+                      </span>
                     </td>
-                    <td style={{ fontWeight: "500" }}>{entry.display_name}</td>
+                    <td className="leaderboard-player">{entry.display_name}</td>
                     <td>{entry.total_score}</td>
                     <td>{entry.quizzes_completed}</td>
                     <td>{parseFloat(entry.average_percentage).toFixed(1)}%</td>
@@ -180,28 +179,13 @@ function Leaderboard() {
           )}
         </div>
       ) : (
-        /* Quiz-specific Leaderboard */
         <div>
-          <div className="card" style={{ marginBottom: "1rem" }}>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "0.5rem",
-                fontWeight: "500",
-              }}
-            >
-              Select a Quiz:
-            </label>
+          <div className="card leaderboard-filter-card">
+            <label className="field-label">Select a Quiz</label>
             <select
               value={selectedQuiz || ""}
               onChange={(e) => setSelectedQuiz(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "0.75rem",
-                borderRadius: "8px",
-                border: "2px solid #e5e7eb",
-                fontSize: "1rem",
-              }}
+              className="select-input"
             >
               <option value="">Choose a quiz...</option>
               {quizzes.map((quiz) => (
@@ -213,22 +197,14 @@ function Leaderboard() {
           </div>
 
           {selectedQuiz && (
-            <div className="card">
-              <h2 style={{ marginBottom: "1rem" }}>
+            <div className="card leaderboard-card">
+              <h2 className="section-title">
                 {quizzes.find((q) => q.id.toString() === selectedQuiz)?.title} -
                 Top Scores
               </h2>
 
               {quizLeaderboard.length === 0 ? (
-                <p
-                  style={{
-                    textAlign: "center",
-                    color: "#6b7280",
-                    padding: "2rem",
-                  }}
-                >
-                  No attempts yet for this quiz.
-                </p>
+                <p className="empty-copy">No attempts yet for this quiz.</p>
               ) : (
                 <table className="leaderboard-table">
                   <thead>
@@ -245,11 +221,18 @@ function Leaderboard() {
                     {quizLeaderboard.map((entry) => (
                       <tr key={entry.id}>
                         <td>
-                          <span style={getRankStyle(entry.rank)}>
+                          <span
+                            className={`rank-badge rank-${Math.min(entry.rank, 3)} ${entry.rank > 3 ? "rank-default" : ""}`}
+                            style={
+                              entry.rank > 3
+                                ? getRankStyle(entry.rank)
+                                : undefined
+                            }
+                          >
                             {entry.rank}
                           </span>
                         </td>
-                        <td style={{ fontWeight: "500" }}>
+                        <td className="leaderboard-player">
                           {entry.display_name}
                         </td>
                         <td>{entry.best_score}</td>

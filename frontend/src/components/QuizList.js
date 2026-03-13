@@ -43,30 +43,58 @@ function QuizList() {
     );
   }
 
+  const totalQuestions = quizzes.reduce(
+    (count, quiz) => count + (quiz.question_count || 0),
+    0,
+  );
+
   return (
-    <div>
+    <div className="page-layout">
       <div className="page-header">
-        <h1 className="page-title">Available Quizzes</h1>
-        <p className="page-subtitle">Choose a quiz and test your knowledge!</p>
+        <div>
+          <span className="eyebrow">Pick your arena</span>
+          <h1 className="page-title">Available Quizzes</h1>
+          <p className="page-subtitle">
+            Browse the catalog, find your lane, and chase a score worth posting.
+          </p>
+        </div>
+        <div className="hero-badge-grid">
+          <div className="hero-badge">
+            <strong>{quizzes.length}</strong>
+            <span>live quizzes</span>
+          </div>
+          <div className="hero-badge">
+            <strong>{totalQuestions}</strong>
+            <span>questions ready</span>
+          </div>
+        </div>
       </div>
 
       {quizzes.length === 0 ? (
-        <div className="card" style={{ textAlign: "center", padding: "3rem" }}>
-          <p style={{ color: "#6b7280" }}>No quizzes available yet.</p>
+        <div className="card empty-state">
+          <p>No quizzes available yet.</p>
         </div>
       ) : (
         <div className="quiz-grid">
           {quizzes.map((quiz) => (
-            <div key={quiz.id} className="card">
+            <div key={quiz.id} className="card quiz-card">
+              <div className="quiz-card-kicker">
+                Round {String(quiz.id).padStart(2, "0")}
+              </div>
               <h2 className="card-title">{quiz.title}</h2>
               <p className="card-description">
                 {quiz.description || "No description available"}
               </p>
-              <div className="card-meta">
+              <div className="quiz-card-meta">
+                <span>{quiz.question_count} questions</span>
+                <span>{quiz.total_points} pts</span>
                 <span>
-                  📝 {quiz.question_count} questions • ⭐ {quiz.total_points}{" "}
-                  points
-                  {quiz.time_limit > 0 && ` • ⏱️ ${quiz.time_limit} min`}
+                  {quiz.time_limit > 0 ? `${quiz.time_limit} min` : "Open pace"}
+                </span>
+              </div>
+              <div className="card-meta">
+                <span className="card-caption">
+                  Fast start, full scoring, instant results.
                 </span>
                 <Link to={`/quiz/${quiz.id}`} className="btn btn-primary">
                   Start Quiz

@@ -52,8 +52,8 @@ function QuizResults() {
 
   if (error) {
     return (
-      <div className="card" style={{ textAlign: "center", padding: "2rem" }}>
-        <p style={{ color: "#ef4444" }}>{error}</p>
+      <div className="card error-card">
+        <p>{error}</p>
         <Link to="/" className="btn btn-primary">
           Back to Quizzes
         </Link>
@@ -67,17 +67,10 @@ function QuizResults() {
 
   return (
     <div className="quiz-container">
-      {/* Results Summary */}
       <div className="card results-card">
-        <h1 style={{ marginBottom: "0.5rem" }}>{result.quiz.title}</h1>
-        <p
-          style={{
-            color: scoreMessage.color,
-            fontSize: "1.25rem",
-            fontWeight: "600",
-            marginBottom: "1.5rem",
-          }}
-        >
+        <span className="eyebrow">Final score</span>
+        <h1 className="results-title">{result.quiz.title}</h1>
+        <p className="results-message" style={{ color: scoreMessage.color }}>
           {scoreMessage.text}
         </p>
 
@@ -107,14 +100,7 @@ function QuizResults() {
           </div>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "1rem",
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
+        <div className="results-actions">
           <button
             className="btn btn-secondary"
             onClick={() => setShowAnswers(!showAnswers)}
@@ -133,90 +119,54 @@ function QuizResults() {
         </div>
       </div>
 
-      {/* Answers Review */}
       {showAnswers && result.answers && (
-        <div style={{ marginTop: "2rem" }}>
-          <h2 style={{ marginBottom: "1rem" }}>Answer Review</h2>
+        <div className="answer-review">
+          <h2 className="section-title">Answer Review</h2>
 
           {result.answers.map((answer, index) => (
             <div
               key={index}
-              className="card"
-              style={{
-                marginBottom: "1rem",
-                borderLeft: `4px solid ${answer.is_correct ? "#10b981" : "#ef4444"}`,
-              }}
+              className={`card review-card ${answer.is_correct ? "correct" : "incorrect"}`}
             >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "0.5rem",
-                }}
-              >
-                <span style={{ fontWeight: "600" }}>Question {index + 1}</span>
-                <span
-                  style={{
-                    color: answer.is_correct ? "#10b981" : "#ef4444",
-                    fontWeight: "500",
-                  }}
-                >
+              <div className="review-header">
+                <span className="review-label">Question {index + 1}</span>
+                <span className="review-status">
                   {answer.is_correct ? "✓ Correct" : "✗ Incorrect"}
                 </span>
               </div>
 
-              <p style={{ marginBottom: "1rem", color: "#374151" }}>
+              <p className="review-question">
                 {answer.question.display_text || answer.question.question_text}
               </p>
 
               {answer.question.question_type === "MULTIPLE_CHOICE" ? (
-                <div>
+                <div className="review-choices">
                   {answer.question.choices.map((choice) => {
                     const isSelected = answer.selected_choice?.id === choice.id;
                     const isCorrect = choice.is_correct;
 
-                    let bgColor = "transparent";
-                    if (isCorrect) bgColor = "#d1fae5";
-                    else if (isSelected && !isCorrect) bgColor = "#fee2e2";
-
                     return (
                       <div
                         key={choice.id}
-                        style={{
-                          padding: "0.75rem",
-                          marginBottom: "0.5rem",
-                          borderRadius: "8px",
-                          background: bgColor,
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "0.5rem",
-                        }}
+                        className={`review-choice ${isCorrect ? "correct" : ""} ${isSelected && !isCorrect ? "selected-wrong" : ""}`}
                       >
                         {isCorrect && <span>✓</span>}
                         {isSelected && !isCorrect && <span>✗</span>}
                         <span>{choice.choice_text}</span>
                         {isSelected && (
-                          <span
-                            style={{
-                              marginLeft: "auto",
-                              color: "#6b7280",
-                              fontSize: "0.875rem",
-                            }}
-                          >
-                            (Your answer)
-                          </span>
+                          <span className="review-note">Your answer</span>
                         )}
                       </div>
                     );
                   })}
                 </div>
               ) : (
-                <div>
-                  <p style={{ marginBottom: "0.5rem" }}>
+                <div className="review-copy-block">
+                  <p>
                     <strong>Your answer:</strong>{" "}
                     {answer.text_answer || "(No answer)"}
                   </p>
-                  <p style={{ color: "#10b981" }}>
+                  <p className="review-correct-answer">
                     <strong>Correct answer:</strong>{" "}
                     {answer.question.correct_blank_answer}
                   </p>
@@ -224,16 +174,7 @@ function QuizResults() {
               )}
 
               {answer.question.explanation && (
-                <div
-                  style={{
-                    marginTop: "1rem",
-                    padding: "0.75rem",
-                    background: "#f3f4f6",
-                    borderRadius: "8px",
-                    fontSize: "0.875rem",
-                    color: "#374151",
-                  }}
-                >
+                <div className="review-explanation">
                   <strong>Explanation:</strong> {answer.question.explanation}
                 </div>
               )}
