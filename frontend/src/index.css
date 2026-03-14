@@ -867,6 +867,31 @@ select {
     color: var(--danger);
 }
 
+.auth-success {
+    margin-bottom: 1rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid rgba(47, 125, 76, 0.22);
+    border-radius: 16px;
+    background: rgba(47, 125, 76, 0.09);
+    color: var(--success);
+}
+
+.auth-inline-actions {
+    margin-top: -0.4rem;
+    text-align: right;
+}
+
+.auth-inline-link {
+    color: var(--accent-deep);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.auth-inline-link:hover {
+    text-decoration: underline;
+}
+
 .auth-footer {
     margin-top: 1.4rem;
     padding-top: 1.25rem;

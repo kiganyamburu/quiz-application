@@ -5,7 +5,14 @@ URL routing for Quiz Application API.
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
-from .auth_views import LoginView, SignupView, LogoutView, CurrentUserView
+from .auth_views import (
+    LoginView,
+    SignupView,
+    LogoutView,
+    CurrentUserView,
+    ForgotPasswordView,
+    ResetPasswordView,
+)
 
 router = DefaultRouter()
 router.register(r"quizzes", views.QuizViewSet, basename="quiz")
@@ -23,4 +30,12 @@ urlpatterns = [
     path("auth/signup/", SignupView.as_view(), name="auth-signup"),
     path("auth/logout/", LogoutView.as_view(), name="auth-logout"),
     path("auth/user/", CurrentUserView.as_view(), name="auth-user"),
+    path(
+        "auth/forgot-password/",
+        ForgotPasswordView.as_view(),
+        name="auth-forgot-password",
+    ),
+    path(
+        "auth/reset-password/", ResetPasswordView.as_view(), name="auth-reset-password"
+    ),
 ]

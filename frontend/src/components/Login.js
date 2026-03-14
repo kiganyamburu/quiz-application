@@ -34,7 +34,7 @@ function Login() {
       setError(
         err.response?.data?.error ||
           err.response?.data?.detail ||
-          "Invalid username or password"
+          "Invalid username or password",
       );
     } finally {
       setLoading(false);
@@ -80,7 +80,17 @@ function Login() {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary btn-lg btn-block" disabled={loading}>
+          <div className="auth-inline-actions">
+            <Link to="/forgot-password" className="auth-inline-link">
+              Forgot password?
+            </Link>
+          </div>
+
+          <button
+            type="submit"
+            className="btn btn-primary btn-lg btn-block"
+            disabled={loading}
+          >
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>

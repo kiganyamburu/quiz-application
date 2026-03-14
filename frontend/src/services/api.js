@@ -21,7 +21,7 @@ api.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Auth API
@@ -47,6 +47,18 @@ export const authAPI = {
   // Get current user
   getCurrentUser: async () => {
     const response = await api.get("/auth/user/");
+    return response.data;
+  },
+
+  // Request password reset
+  forgotPassword: async (email) => {
+    const response = await api.post("/auth/forgot-password/", { email });
+    return response.data;
+  },
+
+  // Reset password with token
+  resetPassword: async (payload) => {
+    const response = await api.post("/auth/reset-password/", payload);
     return response.data;
   },
 };

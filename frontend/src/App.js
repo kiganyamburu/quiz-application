@@ -7,6 +7,8 @@ import QuizResults from "./components/QuizResults";
 import Leaderboard from "./components/Leaderboard";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 import "./index.css";
 
 function NavBar() {
@@ -64,6 +66,11 @@ function AppContent() {
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route
+              path="/reset-password/:uid/:token"
+              element={<ResetPassword />}
+            />
           </Routes>
         </main>
       </div>

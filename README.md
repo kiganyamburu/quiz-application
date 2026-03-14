@@ -119,6 +119,22 @@ DB_HOST=localhost
 DB_PORT=5432
 ```
 
+For password reset email delivery, also configure SMTP:
+
+```
+FRONTEND_URL=http://localhost:3000
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=your-email@example.com
+EMAIL_HOST_PASSWORD=your-email-app-password
+EMAIL_USE_TLS=True
+EMAIL_USE_SSL=False
+DEFAULT_FROM_EMAIL=Quiz Atlas <no-reply@example.com>
+```
+
+If you don't configure SMTP, Django uses console email backend by default (emails print in terminal).
+
 6. Run migrations:
 
 ```bash
